@@ -13,8 +13,9 @@ class SummaryView(View):
     filters_key = 'summary_filters'
 
     def _avg_num_queries(self, filters):
-        queries__aggregate = models.Request.objects.filter(*filters).annotate(num_queries=Count('queries')).aggregate(num=Avg('num_queries'))
-        return queries__aggregate['num']
+#        queries__aggregate = models.Request.objects.filter(*filters).annotate(num_queries=Count('queries')).aggregate(num=Avg('num_queries'))
+        queries__aggregate = models.Request.objects.filter(*filters).annotate(num_queries=Count('queries')).aggregate(Avg('num_queries'))
+        return queries__aggregate['num_queries__avg']
 
     def _avg_time_spent_on_queries(self, filters):
         taken__aggregate = models.Request.objects.filter(*filters).annotate(time_spent=Sum('queries__time_taken')).aggregate(num=Avg('time_spent'))
